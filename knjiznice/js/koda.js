@@ -359,81 +359,6 @@ function getMeritveDataTeza(){
     });
 }
 
-function getMeritveDataMedicine(){
-    sessionId = getSessionId();
-
-    var podatki = window.location.href.split('#');
-    ehrId = podatki[1].trim();
-    
-    $.ajax({
-        url: baseUrl + "/view/" + ehrId + "/medication",
-        type: 'GET',
-        headers: {
-            "Ehr-Session": sessionId
-        },
-        success: function (res){
-            if(res.length > 0){
-               var results = "<table class='uk-table uk-table-condensed uk-table-striped'>"+
-                "<caption>Vsa zdravila paicenta</caption>"+
-                "<tr><th>ime zdravila</th><th>začetni datum jemanja zdravila</th> <th> Končni datum jemanja zdravila</th>" +
-                "<th>Količina</th><th>Enote</th></tr>";
-                for(var i in res){
-                    var datumS = res[i].start_date.split('T');
-                    var datumE = res[i].stop_date.split('T');
-                    
-                    results+="<tr><td>"+res[i].medicine+"</td><td>"+ datumS[0] +"</td><td>" + datumE[0] +
-                    "</td><td>"+ res[i].quantity_amount +"</td><td>"+res[i].quantity_unit+"</td>";
-                }
-                results+="</table>";
-                $("#vsebinaMedicine").append(results);
-            }else{
-                $.UIkit.modal('#novVnosMedicine').show();
-                $("#sporociloMedicinePodatki").append("<p><div class='uk-alert uk-alert-warning'>"+
-                "Pacient trenutno ne uporablja nobenih zdravil, prosimo vnesite novo zdravilo</div></p>");
-                //vnosMedicine();
-            }
-        }
-    })
-}
-
-function vnosMedicine(){
-    sessionId = getSessionId();
-    
-    
-    var d = new Date();
-    var casTreutni = [d.getHours(),d.getMinutes(),d.getSeconds()];
-    
-    var datum = "2014-12-11T"+casTreutni[0]+":"+casTreutni[1]+":"+casTreutni[2]+".005+01:04";
-    
-    $.ajaxSetup({
-        headers: {"Ehr-Session": sessionId }
-    });
-    
-    var podatki = {
-        "ctx/language": "en",
-		"ctx/territory": "SI",
-		"ctx/time": datum,
-		"vital_signs/body_weight/any_event/body_weight": teza,
-    };
-    
-    var parametriZahteve = {
-        ehrId: ehrId,
-        templateId: 'Vital Signs',
-        format: 'FLAT',
-        commiter: merilec
-    };
-    
-    $.ajax({
-        url: baseUrl + "/composition?"+ $.param(parametriZahteve),
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(podatki),
-        success: function(res){
-            $("#sporocilo2").html(ehrId);
-        }
-    });
-}
-
 function blurElement(){
     $("#prikazPodatkov").foggy();
     $(".okvir").hide();
@@ -469,7 +394,6 @@ function preveriZapisEhrId(){
 }
 
 function pridobiKontaktneInformacije(){
-     console.log(ehrId);
      $.ajax({
             url: baseUrl +"/demographics/ehr/"+ ehrId + "/party",
             type: 'GET',
@@ -699,119 +623,6 @@ function generiranjePodatkov(){
     generirajPosameznegaPacienta(3);
 }
 
-function vnosPodatkov(){
-    var ime = $("#ime").val();
-    var priimek = $("#priimek").val();
-    var dRojstva = "0022-01-01T00:00:00.000Z";
-    var naslov = $("#address").val();
-    var telefon = $("#telefonskaStevilka").val();
-    var eMail = $("#eMail").val();
-    if(ime.length == 0 || priimek.length == 0){
-        
-    }
-    else{
-        sessionId = getSessionId();
-        //console.log(ime+ priimek + dRojstva + naslov)
-        $.ajaxSetup({
-            headers: {"Ehr-Session": sessionId }
-        });
-        $.ajax({
-            url: baseUrl + "/ehr",
-            type : 'POST',
-            success: function(data){
-                ehrId = data.ehrId;
-                var partyData = {
-                    firstNames: ime,
-                    lastNames: priimek,
-                    dateOfBirth: dRojstva,
-                    
-                    partyAdditionalInfo: [
-                        {
-                          key: "ehrId",
-                          value:ehrId,
-                        },
-                        {
-                            key: "phoneNumber",
-                            value: telefon,
-                        },
-                        {
-                            key: "address",
-                            value: naslov,
-                        },
-                        {
-                            key: "eMail",
-                            value: eMail
-                        }
-                        ]
-                };
-                $.ajax({
-                    url: baseUrl + "/demographics/party",
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(partyData),
-                    success: function(party){
-                        if(party.action == 'CREATE'){
-                            $("#sporocilo").html(ehrId);
-                        }
-                    }
-                });
-            }
-        });
-    }
-}
 
-function vnosVitalnihZnakov(){
-    sessionId = getSessionId();
-    ehrId = $("#vitalniEhrId").val();
-    //var datum = $("#casVnosa").val();
-    var d = new Date();
-    var casTreutni = [d.getHours(),d.getMinutes(),d.getSeconds()];
-    
-    var datum = "2014-12-11T"+casTreutni[0]+":"+casTreutni[1]+":"+casTreutni[2]+".005+01:00";
-    console.log(datum);
-    var krvniSis = $("#krvnitlakSistolični").val();
-    var krvniDis = $("#krvnitlakDistolični").val();
-    var teza = $("#teza").val();
-    var temperatura = $("#temperatura").val();
-    var merilec = "REKT";
-    
-    /*krvniSis = Math.floor((Math.random() * 30) + 100);
-    krvniDis = Math.floor((Math.random() * 30) + 60);
-    teza = Math.floor((Math.random() * 5) + 90);
-    temperatura = Math.floor((Math.random() * 10) + 30) ;*/
-    
-    $.ajaxSetup({
-        headers: {"Ehr-Session": sessionId }
-    });
-    
-    var podatki = {
-        "ctx/language": "en",
-		"ctx/territory": "SI",
-		"ctx/time": datum,
-		"vital_signs/body_weight/any_event/body_weight": teza,
-		"vital_signs/body_temperature/any_event/temperature|magnitude": temperatura,
-		"vital_signs/body_temperature/any_event/temperature|unit": "°C",
-		"vital_signs/blood_pressure/any_event/systolic": krvniSis,
-		"vital_signs/blood_pressure/any_event/diastolic": krvniDis
-    };
-    
-    var parametriZahteve = {
-        ehrId: ehrId,
-        templateId: 'Vital Signs',
-        format: 'FLAT',
-        commiter: merilec
-    };
-    
-    $.ajax({
-        url: baseUrl + "/composition?"+ $.param(parametriZahteve),
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(podatki),
-        success: function(res){
-            $("#sporocilo2").html(ehrId);
-        }
-    });
-    
-}
 //http://www.healthline.com/health/high-blood-pressure-hypertension
 // TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
