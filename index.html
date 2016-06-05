@@ -3,48 +3,114 @@
 <head>
   <meta charset="utf-8">
   <title>eZdravje :: 4. DN :: OIS 2015/2016</title>
-  <link href="knjiznice/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {padding-top: 70px;}
-  </style>
+  <link rel="stylesheet" type="text/css" href="knjiznice/css/stil.css" >
+  <link rel="stylesheet" type="text/css" href="knjiznice/css/uikit.css">
+  <link rel="stylesheet" type="text/css" href="knjiznice/css/FontAwesome/css/font-awesome.min.css">
+  
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
-  <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
+  <script src="knjiznice/js/jquery.foggy.min.js"></script>
+  <script src="knjiznice/js/uikit.min.js"></script>
 </head>
-<body>
-
-  <!-- ZAČETEK: Menujska vrstica na vrhu spletne strani -->
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menujska-vrstica">
-          <span class="sr-only">Prikaži menu</span>
-          <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-        </button>
-        <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">{AMAZING HEALTH}</a>
-        <!-- KONEC: Ime vaše aplikacije -->
-      </div>
-      <div class="collapse navbar-collapse" id="menujska-vrstica">
-        <ul class="nav navbar-nav">
-          <li><a href="opis.html">Opis ideje</a></li>
-          <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-          <li><a href="#">Generiranje podatkov</a></li>
-        </ul>
-      </div>
-    </div>
+<body onload="preveriZapisEhrId()">
+    
+    <!-- navigacijska vrstica !-->
+<div id="prikazPodatkov">
+  <div class="uk-grid">
+    <div class="uk-width-1-1">
+    <nav class="uk-navbar">
+    <ui class="uk-navbar-nav">
+      <a href="index.html" class="uk-navbar-brand"> HEALTH</a> 
+      <li class="uk-active"><a href="index.html">Home</a></li> 
+      <li><a href="opis.html">opis</a></li>
+      <li><a href="nacrt.html">nacrt</a></li> 
+      <li onclick="generiranjePodatkov()"><a>{Generiranje podatkov}</a></li>
+    </ui>
   </nav>
-  <!-- KONEC: Menujska vrstica na vrhu spletne strani -->
-
-  <!-- ZAČETEK: Vsebina aplikacije -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <p class="lead"><strong>TO-DO</strong>: Na tem mestu implementirajte vašo aplikacijo.</p>
+  </div>
+  </div>
+  <!-- konec navigacijske vrstice !-->
+  <!-- vsebina aplikacije !-->
+  
+  <!-- vnos ehr id za prijavo !-->
+  <div id="vnos">
+  <div class="uk-grid">
+      <div class="uk-width-1-3 uk-panel uk-panel-box uk-container-center uk-form uk-text-center uk-margin-top">
+        
+        <div class="uk-form-row">
+          <select id="demoChange">
+            <option value></option>
+            <option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option>c9331c87-9039-4999-acd6-23f95ecd875d
+            <option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option>
+            <option value="254f791d-2e7c-49d9-b646-376f62d6ead5">Naključko Randome</option>
+            <option value="1f78f43c-8a52-4739-9bfc-946b9dd2b4aa">Robi robotek</option>
+            <option value="c9331c87-9039-4999-acd6-23f95ecd875d">KING</option>
+          </select>
+        </div>
+        
+        
+        <div class="uk-form-row"><input id="preberiEHRid" type="text" class="uk-form-width-large" placeholder="EHR - Id"></div>
+        <div class="uk-form-row"><button type="button" onclick="pridobiEhrId()" class="uk-button uk-button-primary">Potrdi</button></div>
+      <span id="generiraniPodatki"></span>
+    </div>
+  </div>
+  </div>
+  
+  <!-- opozorilo ob prijavi !-->
+  <div id="posredujSporocilo" style="margin-top:10px">
+    <div class="uk-grid"><div class="uk-width-1-2 uk-container-center"><div class="uk-alert uk-alert-danger">
+      <span></span>
+    </div></div></div>
+  </div>
+  <!-- podatki aplikacije !-->
+ 
+  <div id="podatki" style="margin-top:10px">
+    <div class="uk-grid">
+      <div class="uk-panel-box uk-width-1-2 uk-container-center uk-panel-box-secondary">
+        
+        <table class="uk-table" id="tabela">
+    
+        </table>
+        
+        <button type="button" class="uk-button uk-button-success uk-width-1-3 uk-align-center" onclick="ponovniVnosEhrId()">Izbira drugega pacienta</button>
+      </div>
+    
+    </div>
+  
+    <div class="uk-grid">
+      <div class="uk-container-center">
+        <div class="okvir" onclick="blurElement()" id="okvir1">
+         <span class="helper"></span><img src="slike/cardiogram.png">
+         <p>Vitalni znaki</p>
+        </div>
+        
+        <div class="okvir" onclick="preusmeritev(this)">
+          <span class="helper"></span><img src="slike/drugs.png">
+          <p>perscription</p>
+        </div>
       </div>
     </div>
   </div>
-  <!-- KONEC: Vsebina aplikacije -->
 
+</div>  
+<div id="prikazMenija">
+  <div class="uk-grid">
+    <div class="uk-container-center">
+      <p class="uk-text-center"><img class="velikostSmall" src="slike/cancel.png"  onclick="noBlur()"></p>
+      <div class="krogla" onclick="preusmeritev(this)">
+        <img class="velikost" src="slike/blood-drop.png" ><p>blood</p>
+      </div>
+      <div class="krogla" onclick="preusmeritev(this)">
+        <img class="velikost" src="slike/temperature.png"><p>temperature</p>
+      </div>
+      <div class="krogla" onclick="preusmeritev(this)">
+        <img class="velikost" src="slike/weighing-scale.png"><p>weight</p>
+      </div>
+    </div>
+  </div>
+  
+</div>    
+  
+  
 </body>
 </html>

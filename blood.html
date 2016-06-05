@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>eZdravje :: 4. DN :: OIS 2015/2016</title>
+  <link rel="stylesheet" type="text/css" href="knjiznice/css/stil.css" >
+  <link rel="stylesheet" type="text/css" href="knjiznice/css/uikit.css">
+  <link rel="stylesheet" type="text/css" href="knjiznice/css/FontAwesome/css/font-awesome.min.css">
+  
+  <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
+  <script src="knjiznice/js/jquery.foggy.min.js"></script>
+  <script src="knjiznice/js/koda.js"></script>
+  <script src="knjiznice/js/Chart.min.js"></script>
+  <script src="knjiznice/js/uikit.min.js"></script>
+</head>
+<body onload="getMeritveDataKrvniTlak()">
+  <nav class="uk-navbar">
+    <ui class="uk-navbar-nav">
+      <a href="index.html" class="uk-navbar-brand"> HEALTH</a> 
+      <li class="uk-active"><a href="index.html">Home</a></li> 
+      <li><a href="opis.html">opis</a></li>
+      <li><a href="nacrt.html">nacrt</a></li>
+      <li><a href="generate.html">{Generiranje podatkov}</a></li>
+    </ui>
+  </nav>
+  
+  <div class="uk-grid">
+    <div class="uk-container-center">
+      <div class="kroglaSmall" onclick="preusmeritev(this)" style="border-color: #F44336;">
+        <img class="velikostSmall" src="slike/blood-drop.png">
+        <p class="uk-hidden">blood</p>
+      </div>
+      <div class="kroglaSmall" onclick="preusmeritev(this)">
+        <img class="velikostSmall" src="slike/temperature.png">
+        <p class="uk-hidden">temperature</p>
+      </div>
+      <div class="kroglaSmall" onclick="preusmeritev(this)">
+        <img class="velikostSmall" src="slike/weighing-scale.png">
+        <p class="uk-hidden">weight</p>
+      </div>
+        </div>
+  </div>
+  
+  <div class="uk-grid">
+    <div class="uk-panel uk-panel-box uk-width-4-5 uk-container-center uk-panel-box-secondary">
+      
+     
+      <button class="uk-button uk-button-success uk-margin" onclick="backToMain()">NAZAJ</button>
+      <div id="vsebinaBlood"></div>
+    </div>
+    <div class="uk-panel uk-panel-box uk-panel-box-secondary uk-width-4-5 uk-container-center uk-margin">
+      <canvas id="myChart" width="400" height="300"></canvas>
+      <canvas id="myChart2" width="400" height="300"></canvas>
+      <div class="uk-panel uk-width-1-4 uk-float-right">
+        <p id="informacijaOPacientu"></p>
+        <button class="uk-button uk-button-primary uk-align-center" data-uk-modal="{target:'#pacientKontakt',bgclose:false}" onclick="pridobiKontaktneInformacije()">kontaktiraj pacienta</button>
+      </div>
+    </div>
+    
+    
+  </div>
+  
+  <div id="pacientKontakt" class="uk-modal">
+    <div class="uk-modal-dialog">
+      <a class="uk-modal-close uk-close"></a>
+        <dl class="uk-description-list-horizontal" id="vrniKontaktneInformacije">
+        </dl>
+    </div>
+  </div>
+  
+  
+  
+</body>
+</html>
