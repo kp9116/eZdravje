@@ -6,6 +6,8 @@ var username = "ois.seminar";
 var password = "ois4fri";
 var ehrId="";
 
+var map="";
+var infowindow;
 /**
  * Prijava v sistem z privzetim uporabnikom za predmet OIS in pridobitev
  * enolične ID številke za dostop do funkcionalnosti
@@ -487,8 +489,74 @@ function pridobiKontaktneInformacije(){
             error: function(err){
                 $("#vrniKontaktneInformacije").html("<div class='uk-alert-danger'>Pozor podatki ne obstajajo</div>");
             }
-        });  
+        });
+     
+     if(map==""){
+         vrniMap();
+     }
+  
 }
+
+function vrniMap(){
+    var lj = new google.maps.LatLng(46.059902, 14.506352);
+    var pyrmont = new google.maps.LatLng(19.107567, 72.8335);
+      
+    var mapDiv = document.getElementById('map');
+    map = new google.maps.Map(mapDiv, {
+      //center: {lat: 46.059902, lng: 14.506352},
+      center: lj,
+      zoom: 12
+    });
+    
+    var marker = new google.maps.Marker({
+      position: lj,
+      title:"Hello World!",
+      visible: true
+    });
+    marker.setMap(map);
+    
+    var request = {
+    location: lj,
+    radius: 3000,
+    types: ['hospital'] // this is where you set the map to get the hospitals and health related places
+    };
+  
+  infowindow = new google.maps.InfoWindow();
+  var service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, callback);
+  
+}
+
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      createMarker(results[i]);
+      //console.log(results[i].geometry.location.lat());
+      //console.log(results[i].geometry.location.lng());
+    }
+  }
+}
+
+
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  //console.log(placeLoc);
+  console.log(map);
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location,
+    visible: true
+  });
+    console.log(map);
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+
+
 
 function generirajPosameznegaPacienta(st){
     var imeT = ["Zdravko","Random","Rudi"];
@@ -550,16 +618,79 @@ function generirajPosameznegaPacienta(st){
                     data: JSON.stringify(partyData),
                     success: function(party){
                         if(party.action == 'CREATE'){
-                            $("#generiraniPodatki").append("<div class='uk-alert'>"+tmp+"</div>")
+                            $("#generiraniPodatki").append("<div class='uk-alert'>"+tmp+"</div>");
+                            console.log(tmp);
+                            for(var i=0; i<30;i++){
+                            vnosNovihvitalnihZnakov(st,tmp);
+                            }
                         }
+                        
                     }
                 });
         }
     });
+    
 }
 
+function vnosNovihvitalnihZnakov(st,ehr){
+    SessionId = getSessionId();
+    ehrId = ehr;
+    
+    var d = new Date();
+    var casTreutni = [d.getHours(),d.getMinutes(),d.getSeconds()];
+    
+    var datum = "2014-12-11T"+casTreutni[0]+":"+casTreutni[1]+":"+casTreutni[2]+".005+01:00";
+    var krvniSis;
+    var krvniDis;
+    var teza;
+    var temperatura; 
+    var merilec = "REKT";
+    
+    var zgornjeMejeSis = [92,105,115];
+    var zgornjeMejeDis = [52,62,75];
+    var zgornjeMejeTeza = [65,87,90];
+    var zgornjeMejeTemperatura = [32,35,40];
+    
+    krvniSis = Math.floor((Math.random() * 30) + zgornjeMejeSis[st-1]);
+    krvniDis = Math.floor((Math.random() * 30) + zgornjeMejeDis[st-1]);
+    teza = Math.floor((Math.random() * 5) + zgornjeMejeTeza[st-1]);
+    temperatura = Math.floor((Math.random() * 5) + zgornjeMejeTemperatura[st-1]);
+    
+    $.ajaxSetup({
+        headers: {"Ehr-Session": sessionId }
+    });
+    
+    var podatki = {
+        "ctx/language": "en",
+		"ctx/territory": "SI",
+		"ctx/time": datum,
+		"vital_signs/body_weight/any_event/body_weight": teza,
+		"vital_signs/body_temperature/any_event/temperature|magnitude": temperatura,
+		"vital_signs/body_temperature/any_event/temperature|unit": "°C",
+		"vital_signs/blood_pressure/any_event/systolic": krvniSis,
+		"vital_signs/blood_pressure/any_event/diastolic": krvniDis
+    };
+    
+    var parametriZahteve = {
+        ehrId: ehrId,
+        templateId: 'Vital Signs',
+        format: 'FLAT',
+        commiter: merilec
+    };
+    
+    $.ajax({
+        url: baseUrl + "/composition?"+ $.param(parametriZahteve),
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(podatki),
+        success: function(res){
+            $("#spin").html("");
+        }
+    });   
+}
 
 function generiranjePodatkov(){
+    $("#spin").append("<i class='uk-icon-spinner uk-icon-spin'></i>");
     generirajPosameznegaPacienta(1);
     generirajPosameznegaPacienta(2);
     generirajPosameznegaPacienta(3);
@@ -633,7 +764,7 @@ function vnosVitalnihZnakov(){
     var d = new Date();
     var casTreutni = [d.getHours(),d.getMinutes(),d.getSeconds()];
     
-    var datum = "2014-12-11T"+casTreutni[0]+":"+casTreutni[1]+":"+casTreutni[2]+".005+01:04";
+    var datum = "2014-12-11T"+casTreutni[0]+":"+casTreutni[1]+":"+casTreutni[2]+".005+01:00";
     console.log(datum);
     var krvniSis = $("#krvnitlakSistolični").val();
     var krvniDis = $("#krvnitlakDistolični").val();
@@ -641,10 +772,10 @@ function vnosVitalnihZnakov(){
     var temperatura = $("#temperatura").val();
     var merilec = "REKT";
     
-    krvniSis = Math.floor((Math.random() * 30) + 100);
+    /*krvniSis = Math.floor((Math.random() * 30) + 100);
     krvniDis = Math.floor((Math.random() * 30) + 60);
     teza = Math.floor((Math.random() * 5) + 90);
-    temperatura = Math.floor((Math.random() * 10) + 30) ;
+    temperatura = Math.floor((Math.random() * 10) + 30) ;*/
     
     $.ajaxSetup({
         headers: {"Ehr-Session": sessionId }

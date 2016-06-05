@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="knjiznice/css/stil.css" >
   <link rel="stylesheet" type="text/css" href="knjiznice/css/uikit.css">
   <link rel="stylesheet" type="text/css" href="knjiznice/css/FontAwesome/css/font-awesome.min.css">
-  
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvXv8saJbeokbhVHF2YYiY11YBxZnypQM&libraries=places"></script>
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
   <script src="knjiznice/js/jquery.foggy.min.js"></script>
@@ -14,7 +14,8 @@
 </head>
 <body onload="preveriZapisEhrId()">
     
-    <!-- navigacijska vrstica !-->
+    <!-- navigacijska vrstica !--
+    AIzaSyDvXv8saJbeokbhVHF2YYiY11YBxZnypQM -->
 <div id="prikazPodatkov">
   <div class="uk-grid">
     <div class="uk-width-1-1">
@@ -40,10 +41,9 @@
         <div class="uk-form-row">
           <select id="demoChange">
             <option value></option>
-            <option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option>c9331c87-9039-4999-acd6-23f95ecd875d
-            <option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option>
-            <option value="254f791d-2e7c-49d9-b646-376f62d6ead5">Naključko Randome</option>
-            <option value="1f78f43c-8a52-4739-9bfc-946b9dd2b4aa">Robi robotek</option>
+            <option value="857b9581-f759-446a-954f-914a17063e88">Super Toni</option>
+            <option value="967fc052-003d-44a6-9114-ab72ee1df280">John Snow</option>
+            <option value="5caa1704-b8bb-4bdf-9046-aa7f0ba59ba1">Gabe Newell</option>
             <option value="c9331c87-9039-4999-acd6-23f95ecd875d">KING</option>
           </select>
         </div>
@@ -51,7 +51,9 @@
         
         <div class="uk-form-row"><input id="preberiEHRid" type="text" class="uk-form-width-large" placeholder="EHR - Id"></div>
         <div class="uk-form-row"><button type="button" onclick="pridobiEhrId()" class="uk-button uk-button-primary uk-margin">Potrdi</button></div>
-      <span id="generiraniPodatki"></span>
+      <span id="generiraniPodatki">
+        <span id="spin"></span>
+      </span>
     </div>
   </div>
   </div>
@@ -84,10 +86,7 @@
          <p>Vitalni znaki</p>
         </div>
         
-        <div class="okvir" onclick="preusmeritev(this)">
-          <span class="helper"></span><img src="slike/drugs.png">
-          <p>perscription</p>
-        </div>
+        
       </div>
     </div>
   </div>

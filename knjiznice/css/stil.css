@@ -70,3 +70,8 @@
 #vnos{
   display: none;
 }
+
+#map {
+  width:80%;
+  height:300px;
+}
