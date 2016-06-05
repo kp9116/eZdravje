@@ -17,7 +17,6 @@
       <li><a href="index.html">Home</a></li> 
       <li class="uk-active"><a href="opis.html">opis</a></li>
       <li><a href="nacrt.html">nacrt</a></li>
-      <li><a href="generate.html">{Generiranje podatkov}</a></li>
     </ui>
     
   </nav>
@@ -25,30 +24,59 @@
   
   
   <div class="uk-grid">
-    <div class="uk-panel uk-width-3-4 uk-panel-box uk-container-center uk-form uk-margin">
-      <div class="uk-form-row"><input type="text" id="ime" placeholder="ime"></div>
-      <div class="uk-form-row"><input type="text" id="priimek" placeholder="priimek"></div>
-      <div class="uk-form-row"><input type="text" id="datumRojstva" placeholder="datumRojstva"></div>
-      <div class="uk-form-row"><input type="text" id="address" placeholder="naslov"></div>
-      <div class="uk-form-row"><input type="text" id="telefonskaStevilka" placeholder="phone number"></div>
-      <div class="uk-form-row"><input type="text" id="eMail" placeholder="e-mail naslov"></div>
-      <div class="uk-form-row"><button class="uk-button" onclick="vnosPodatkov()">OK</button></div>
-    <div id="sporocilo"></div>
-    </div>
-    <div class="uk-panel uk-width-3-4 uk-panel-box uk-container-center uk-form">
-      <div class="uk-form-row"><input type="text" id="vitalniEhrId" placeholder="Ehr id"></div>
-      <div class="uk-form-row"><input type="text" id="krvnitlakSistolični" placeholder="krvnitlakSistolični"></div>
-      <div class="uk-form-row"><input type="text" id="krvnitlakDistolični" placeholder="krvnitlakDistoli"></div>
-      <div class="uk-form-row"><input type="text" id="teza" placeholder="Teža"></div>
-      <div class="uk-form-row"><input type="text" id="temperatura" placeholder="temperatura"></div>
-      <div class="uk-form-row"><input type="text" id="casVnosa" placeholder="časvnosa"></div>
-      
-      <div class="uk-form-row">
-      <button class="uk-button uk-button-danger" onclick="vnosVitalnihZnakov()">Posebni Vnos</button>
-      <div id="sporocilo2"></div>
-      </div>
+    <div class="uk-panel uk-width-8-10 uk-panel-box uk-container-center uk-margin-top uk-panel-header">
+      <h class="uk-panel-title">Opis ideje, ki jo aplikacija podpira</h>
+     <p>
+       Aplikacije je namenjena za uporabe zdravnikov.<br>
+       Aplikacija omogoča,da zdravnik vidi pacientove vitalne znake, to so vsi taki znaki, ki si
+       jih pacient lahko odčita doma. Te vitalne znake si lahko s pomočjo aplikacije ogleda zdravnik in nato
+       v primeru težav kontaktira in usmeri pacienta do najbližjega oz. najbolšega zdravstvenega inštituta.
+     </p> 
     </div>
     
+    <div class="uk-panel uk-width-8-10 uk-panel-box uk-container-center uk-margin-top uk-panel-header">
+      <h class="uk-panel-title">Uporabljeni zunanji viri </h>
+     <p>
+      <dl class="uk-description-list-horizontal">
+      <dt>URL</dt>
+      <dd><a href="http://www.healthline.com/health">http://www.healthline.com/health</a></dd>
+      <dd><a href="http://apps.who.int/gho/data/node.home">http://apps.who.int/gho/data/node.home</a></dd>
+      <dd>Zgornja dva naslova sem uporabljaj za seznanitev z boleznimi (meje previsokega pritiska,...), ter uvoz podatkov</dd>
+      <p>
+      <dt>URL</dt>
+      <dd><a href="https://developers.google.com/maps/">Google maps API</a></dd>
+      <dd>API uporabljen za lokacijo bljižnjih bolnišnic.</dd>
+      </p>
+      </dl>
+     </p> 
+    </div>
+    
+    <div class="uk-panel uk-width-8-10 uk-panel-box uk-container-center uk-margin-top uk-panel-header">
+      <h class="uk-panel-title">Master / detail</h>
+     <p>
+      Moj mater/detail vzorec omogoča izbiro uporabnika, na podlagi katere se nam prikažejo njegove 
+      detaili (ime , priimek, ...). na podlagi izbire uporabnika omogoča tudi predstavitev podatkov v tabeli
+      , kjer pa izpostavi vrednosti, ki so prevelike (prevelika teža, previsok krvni tlak)
+     </p> 
+    </div>
+    
+    <div class="uk-panel uk-width-8-10 uk-panel-box uk-container-center uk-margin-top uk-panel-header">
+      <h class="uk-panel-title">Uporabljena tehnika za vizualizacijo podatkov</h>
+     <p>
+      Uporabljal sem tehniko <a href="http://www.chartjs.org/"  target="_blank">Chart.js</a> , ki omogoča vizualizacijo grafov<br>
+      celotna stran je narejena z <a href="http://getuikit.com/index.html"  target="_blank">UI-kitom</a>
+     </p> 
+     <p>
+        <dl class="uk-description-list-horizontal">
+         <dt>Dodatni linki</dt>
+         <dd><a href="http://fontawesome.io/?utm_source=hackernewsletter"  target="_blank">Font awesome</a></dd>
+         <dd><a href="http://www.flaticon.com/"  target="_blank">Ikone in slike</a></dd>
+         <dd><a href="https://imgflip.com/readImage?iid=58771928"  target="_blank">For fun :D</a></dd>
+        </dl>
+        <h3>Aplikcaija ni production ready! Only a proof of concept</h3>
+     </p>
+    </div>
+  
     </div>
   
 </body>

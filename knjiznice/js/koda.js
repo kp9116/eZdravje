@@ -195,10 +195,11 @@ function getMeritveDataKrvniTlak(){
                         }
                     }
                 });
+                $("#informacijaOPacientu").html("Pacinetov krvni tlak je "+wlenght+" krat presegel varno vrednost, in "+dlenght+
+                " krat presegel območje nevarnosti!");
             }
             
-            $("#informacijaOPacientu").html("Pacinetov krvni tlak je "+wlenght+" krat presegel varno vrednost, in "+dlenght+
-            " krat presegel območje nevarnosti!");
+            
             
         }
     })
@@ -230,10 +231,10 @@ function getMeritveDataTemperatura(){
                 "<th>Enote</th></tr>";
                  for(var i in res){
                     
-                    if(res[i].temperature > 90){
+                    if(res[i].temperature > 36){
                     results+="<tr class='uk-text-warning uk-text-bold'><td>"+i+"</td><td>"+res[i].time + "</td><td>"+res[i].temperature+"</td>"+
                     "<td>"+res[i].unit+"</td></tr>";
-                    pretezek++;
+                    warm++;
                     }else{results+="<tr><td>"+i+"</td><td>"+res[i].time + "</td><td>"+res[i].temperature+"</td>"+
                     "<td>"+res[i].unit+"</td></tr>";
                     }
@@ -274,7 +275,9 @@ function getMeritveDataTemperatura(){
                         }
                     }
                 });
-                 
+                 $("#informacijaOPacientu").html("Pacientova temperatura je "+warm+" krat presegla varno območje");
+            }else{
+                $("#vsebinaTemperatura").append("<div class='uk-alert uk-alert-warning'>Ni podatkov!</div>");
             }
         }
     });
@@ -311,7 +314,6 @@ function getMeritveDataTeza(){
                     "<td>"+res[i].unit+"</td></tr>";
                     }
                     
-                    pretezek++;
                     tabCasov[i] = i;
                     tabTeze[i] = res[i].weight;
                     
@@ -327,7 +329,7 @@ function getMeritveDataTeza(){
             
                         labels: tabCasov,
                         datasets: [{
-                            label: 'Sistolični krvni tlak',
+                            label: 'Teza',
                             data: tabTeze,
                             backgroundColor: "rgba(129,212,250,0.5)",
                             
@@ -351,6 +353,7 @@ function getMeritveDataTeza(){
                         }
                     }
                 });
+                $("#informacijaOPacientu").html("Pacientova teza je "+pretezek+" krat presegla varno območje");
            }
        }
     });
