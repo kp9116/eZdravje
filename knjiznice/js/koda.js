@@ -489,35 +489,35 @@ function pridobiKontaktneInformacije(){
             }
         });  
 }
-function generiranjePodatkov(){
+
+function generirajPosameznegaPacienta(st){
     var imeT = ["Zdravko","Random","Rudi"];
     var priimekT =["Zdravi","Povprečnez","Bolni"];
     var drojstvaT = "1990-12-11T18:48:37.005+01:04";
     var naslovT = ["Pod gor 12","V mesu 22","Zgornja Jama 69"];
     var telefonT = ["031 222 661","225 010 333","0010 1001 1010"];
     var eMailT = ["srecen.zdrav@mail.com","povprecni.bolnik@mail.com","binarna.uganka@ugani.si"];
-    //console.log(eMail[0]);
+    var tmp;
     
     sessionId = getSessionId();
-    for(var i=0; i<3;i++){
+    
     $.ajaxSetup({
         headers: {"Ehr-Session": sessionId }
     });
     
     
-    var ime = imeT[i];
-    var priimek = priimekT[i];
-    var drojstva = drojstvaT[i];
-    var naslov = naslovT[i];
-    var telefon = telefonT[i];
-    var eMail = eMailT[i];
+    var ime = imeT[st-1];
+    var priimek = priimekT[st-1];
+    var drojstva = drojstvaT[st-1];
+    var naslov = naslovT[st-1];
+    var telefon = telefonT[st-1];
+    var eMail = eMailT[st-1];
     
     $.ajax({
         url: baseUrl + "/ehr",
         type: 'POST',
         success: function (data){
-            ehrId = data.ehrId;
-            console.log(ehrId);
+            tmp = data.ehrId;
             var partyData = {
                 firstNames: ime,
                 lastNames: priimek,
@@ -526,7 +526,7 @@ function generiranjePodatkov(){
                partyAdditionalInfo: [
                         {
                           key: "ehrId",
-                          value:ehrId,
+                          value:tmp,
                         },
                         {
                             key: "phoneNumber",
@@ -550,16 +550,21 @@ function generiranjePodatkov(){
                     data: JSON.stringify(partyData),
                     success: function(party){
                         if(party.action == 'CREATE'){
-                            $("#generiraniPodatki").append("<div class='uk-alert'>"+ehrId+"</div>")
+                            $("#generiraniPodatki").append("<div class='uk-alert'>"+tmp+"</div>")
                         }
                     }
                 });
         }
     });
-    
-        
-    }
 }
+
+
+function generiranjePodatkov(){
+    generirajPosameznegaPacienta(1);
+    generirajPosameznegaPacienta(2);
+    generirajPosameznegaPacienta(3);
+}
+
 function vnosPodatkov(){
     var ime = $("#ime").val();
     var priimek = $("#priimek").val();
